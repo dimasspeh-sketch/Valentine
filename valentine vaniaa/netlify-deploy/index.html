@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An interactive Valentine's Day experience">
+    <meta name="theme-color" content="#FF1493">
+    <title>💕 Valentine's Day With Vania 💕</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Music -->
+    <audio id="bg-music" autoplay loop preload="auto" volume="0.3">
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Music Control Button -->
+    <button id="music-toggle" class="music-toggle" aria-label="Toggle background music" title="Toggle Music">🔊</button>
+
+    <!-- ==================== PAGE 1: PASSWORD ENTRY ==================== -->
+    <div id="page1" class="page active">
+        <div class="container">
+            <div class="password-container">
+                <h1 class="title">Masukkan password untuk membuka surat ini</h1>
+                
+                <div class="message-box" style="text-align:center; display:flex; flex-direction:column; align-items:center;">
+                    <p class="quote">"Love is the bridge between two hearts, and you are mine."</p>
+                    <p class="message">This is a special experience created just for you.</p>
+                </div>
+
+                <div class="password-section">
+                    <p class="password-hint">💝 Masukkan kode akses untuk membuka petualangan cinta...</p>
+                    <input 
+                        type="password" 
+                        id="password-input" 
+                        class="password-input" 
+                        placeholder="Masukkan password..." 
+                        onkeypress="handlePasswordKeyPress(event)"
+                        oninput="updatePasswordButtonState()"
+                        aria-label="Password input"
+                    >
+                    <button class="btn btn-yes" id="unlock-btn" onclick="checkPassword()" disabled>🔓 BUKA 🔓</button>
+                    <p class="password-hint small">💡 Hint: tempat kita nonton 💡</p>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="showHint()">� MINTA BANTUAN 💭</button>
+                </div>
+
+                <div id="hint-box" class="hint-box" style="display: none;">
+                    <p class="hint-text">📞 CALL PANGERAN KESAYANGANMU! 💕</p>
+                </div>
+
+                <div id="error-message" class="error-message" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Falling Hearts Canvas -->
+        <div id="hearts-container" class="hearts-container"></div>
+    </div>
+
+    <!-- ==================== PAGE 2: VALENTINE QUESTION ==================== -->
+    <div id="page2" class="page">
+        <div class="container valentine-container">
+            <div class="valentine-content">
+                <h1 class="valentine-title">Will You Be My Valentine?</h1>
+                
+                <div class="valentine-animation">
+                    <div class="floating-heart-animation">❤️</div>
+                    <div class="floating-heart-animation" style="animation-delay: 0.3s;">💕</div>
+                    <div class="floating-heart-animation" style="animation-delay: 0.6s;">❤️</div>
+                </div>
+
+                <!-- Valentine photo (centered between title and buttons) -->
+                <div class="valentine-photo">
+                    <img src="bunga.png" alt="Bunga" class="wiggle" />
+                </div>
+
+                <div class="button-group valentine-buttons">
+                    <button class="btn btn-yes" onclick="goToPage(3)">Iya, mau bangettt2</button>
+                    <button class="btn btn-secondary" onclick="goToPage(5)">Iya</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Falling Hearts -->
+        <div id="page2-hearts-container" class="hearts-container"></div>
+    </div>
+
+    <!-- ==================== PAGE 3: PHOTO GALLERY ==================== -->
+    <div id="page3" class="page">
+        <div class="container gallery-container">
+            <h1 class="gallery-title">
+                <span class="title-heart left-heart">🤍</span>
+                 ORANG YANG PALING AKU SAYANG 
+                <span class="title-heart right-heart">🤍</span>
+            </h1>
+            <div class="gallery-hearts-decoration"></div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="1.jpeg" alt="Foto 1">
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="2.jpeg" alt="Foto 2">
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="3.jpeg" alt="Foto 3">
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="4.jpeg" alt="Foto 4">
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group gallery-buttons">
+                <button class="btn btn-secondary" onclick="goToPage(2)">← Kembali</button>
+                <button class="btn btn-yes" onclick="goToPage(4)">💌 Baca Surat Cintaku 💌</button>
+            </div>
+
+            <!-- Floating Hearts -->
+            <div id="gallery-hearts-container" class="floating-hearts"></div>
+        </div>
+    </div>
+
+    <!-- ==================== PAGE 4: SEALED LETTER ==================== -->
+    <div id="page4" class="page">
+        <div class="letter-page-wrapper">
+            <button class="close-letter-btn" onclick="closeLetter()" title="Tutup surat">✕</button>
+            
+            <div class="letter-scroll">
+                <div class="letter-header">
+                    <div class="letter-decoration-top">✨</div>
+                    <h1 class="letter-title">💌 Untukmu Vania 💌</h1>
+                    <div class="letter-decoration-line"></div>
+                </div>
+
+                <div class="letter-main-content">
+                    <p class="greeting">SELAMAT HARI VALENTINE VANIA, SAYANG 💕</p>
+                    
+                    <p>Tahun ini mulai biasa aja, sampai kamu masuk ke hidup aku. Jujur, aku gak pernah percaya sama takdir sebelum ketemu sama kamu. Tapi setiap hari sama kamu, aku ketemu alasan baru buat cinta sama kamu.</p>
+                    
+                    <p>Kamu cahaya di hidup aku yang gelap. Senyuman kamu bikin aku bahagia, mata kamu penuh sama cerita yang aku pengen listening terus-terusan. Tiap kali aku denger tawa kamu, hati aku serasa bergerak dengan indah gitu.</p>
+                    
+                    <p>Kamu ajarin aku arti cinta yang beneran. Bukan cuma dari kata-kata, tapi dari cara kamu lihat aku, cara kamu pegang tangan aku, cara kamu inget aku bahkan pas jauh. Itu yang bikin aku sadar, tanpa kamu hidup aku nggak ada artinya.</p>
+                    
+                    <p>Aku pengen setiap hari sama kamu di samping. Bangun pagi lihat wajah kamu jadi yang pertama. Tertawa sama kamu, nangis sama kamu, deal sama masalah bareng. Aku pengen jadi alasan kamu senyum pas hari-hari berat.</p>
+                    
+                    <p>Meskipun dunia jatuh, selama aku sama kamu semua bakal oke. Kamu rumah aku pas aku tersesat. Kamu harapan aku pas semua terasa hopeless. Kamu semua yang aku perlu dan lebih dari mimpi aku.</p>
+                    
+                    <p>Aku janji selalu ada buat kamu, di suka dan duka. Aku janji cinta sama kamu dengan sepenuh hati, tanpa keraguan. Aku janji jadi yang terbaik dari aku, buat kamu dan buat kita.</p>
+                    
+                    <p>Mari kita bikin kenangan yang bikin kita ngakak pas tua nanti. Mari kita build dreams bersama dan realize satu-satu. Habis setiap momen bareng dengan love dan grateful.</p>
+                    
+                    <p>Vania, kamu cinta pertama aku yang beneran aku rasa. Kamu cinta terakhir yang bakalan aku cari. Kamu one and only yang aku butuh sepanjang hidup.</p>
+                </div>
+
+                <div class="letter-effort-credit">
+                    <p>✨ This valentine experience was built with love and hard work ✨</p>
+                    <p style="font-size: 0.9em; margin-top: 5px;">Every animation, every feature, every detail was crafted just for you 💕</p>
+                </div>
+
+                <div class="letter-footer">
+                    <div class="letter-decoration-line"></div>
+                    <p class="closing"><strong>Selamanya milikmu, dengan sepenuh hati,</strong><br><br><strong>❤️ Cintamu ❤️</strong></p>
+                    <div class="letter-decoration-bottom">✨</div>
+                </div>
+
+                <div id="letter-hearts-container" class="falling-love-hearts"></div>
+            </div>
+
+            <div class="letter-buttons-bottom">
+                <button class="btn btn-secondary" onclick="goToPage(3)">← Kembali ke Galeri</button>
+                <button class="btn btn-yes" onclick="goToPage(1)">🔄 Mulai Ulang</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PAGE 5: SAD ENDING ==================== -->
+    <div id="page5" class="page">
+        <div class="container sad-ending-container">
+            <div class="sad-message-wrapper">
+                <h1 class="sad-title">😢</h1>
+                <div class="sad-message">
+                    <p>KAMUUU...</p>
+                    <p>UDAH GASAYANG AKU YA?</p>
+                    <p>KAMU UDAH BOSEN YA SAMA AKU?</p>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="goToPage(2)">← Kembali (Pilih lagi)</button>
+                    <button class="btn btn-yes" onclick="goToPage(1)">🔄 Mulai Ulang</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Error Messages -->
+    <div id="modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <p id="modal-message"></p>
+            <button class="btn btn-secondary" onclick="closeModal()">OK</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
